@@ -42,7 +42,7 @@ hmap_color = map(colormap, val) do c, t
     mini, maxi = first(range), last(range)
     # you can pass along a tuple of pairs, which will map to the keyword args of visualize
     ((hmap, :surface), (
-        :color=>cmap,
+        :color_map=>cmap,
         :color_norm=>Vec2f0(-1,2),
         :ranges => (range, range),
         :boundingbox=>AABB{Float32}(Vec3f0(mini, mini, -1f0), Vec3f0(maxi-mini, maxi-mini, 3f0))
