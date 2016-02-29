@@ -31,7 +31,7 @@ renderloop(window)
 
 ![Image Processing](https://github.com/SimonDanisch/SignalView.jl/blob/master/docs/image_proc.png?raw=true)
 
-[video](https://vimeo.com/157136166)
+[video](https://vimeo.com/157136166) | 
 [code](https://github.com/SimonDanisch/SignalView.jl/blob/master/examples/imageproc.jl)
 
 
@@ -39,5 +39,5 @@ renderloop(window)
 
 ![Surface / Contour](https://github.com/SimonDanisch/SignalView.jl/blob/master/docs/signalview.png?raw=true)
 
-[video](https://vimeo.com/157128992)
+[video](https://vimeo.com/157128992) | 
 [code](https://github.com/SimonDanisch/SignalView.jl/blob/master/examples/simple.jl)
