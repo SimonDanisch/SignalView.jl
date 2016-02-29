@@ -1,3 +1,5 @@
+# TODO move this back to GraphLayout
+
 function _tree_rectangle(x, y, rect)
     SimpleRectangle(rect.x + x - rect.w/2, rect.y + y - rect.w/2, rect.w, rect.h)
 end
@@ -121,7 +123,10 @@ function layout_tree{T<:Integer, R<:SimpleRectangle}(
     return positioned_rectangles, lines
 end
 
-
+"""
+Takes a signal and creates a dictionary of unique nodes and
+their neighbours from the signal graph.
+"""
 function to_adjency_dict(s::Signal, adjecency_dict = Dict{Signal, Vector{Any}}(), neighbours = [])
     adjecency_dict[s] = neighbours
     for action in s.actions
@@ -139,6 +144,10 @@ function to_adjency_dict(s::Signal, adjecency_dict = Dict{Signal, Vector{Any}}()
     adjecency_dict
 end
 
+"""
+Takes the signal `s` and turns it into a adjecency list plus a list of the unique
+nodes in the correct order for the adjecency list.
+"""
 function to_adjency_list(s::Signal)
     dict = to_adjency_dict(s)
     adjecency_list = Vector{Int}[]
