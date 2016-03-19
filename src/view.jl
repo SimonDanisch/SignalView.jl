@@ -51,7 +51,7 @@ end
 function view_signal(signal::Signal, window)
     adjecency_list, signal_nodes = to_adjency_list(signal)
     label_sizes = [SimpleRectangle(0f0, 0f0, 100f0, 100f0) for i=1:length(adjecency_list)]
-    rects, lines = layout_tree(adjecency_list, label_sizes)
+    rects, lines = GraphLayout.layout_tree(adjecency_list, label_sizes)
 
     graph = visualize((rects, lines))
     view(graph, window)
