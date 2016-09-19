@@ -50,11 +50,11 @@ end
 
 function view_signal(signal::Signal, window)
     adjecency_list, signal_nodes = to_adjency_list(signal)
-    label_sizes = [SimpleRectangle(0f0, 0f0, 100f0, 100f0) for i=1:length(adjecency_list)]
-    rects, lines = layout_tree(adjecency_list, label_sizes)
+    label_sizes = [100f0 for i=1:length(adjecency_list)]
+    rects, lines = Buchheim.layout(adjecency_list, nodesize=label_sizes)
 
     graph = visualize((rects, lines))
-    view(graph, window)
+    _view(graph, window)
     for (area, s) in zip(rects, signal_nodes)
         s_area = map(window.cameras[:orthographic_pixel].projectionview, window.inputs[:framebuffer_size]) do pv, fs
             xy = Vec4f0(area.x+2, area.y+2, 0, 1)
@@ -70,7 +70,7 @@ function view_signal(signal::Signal, window)
             vis = visualize(s)
         end
 
-        view(vis, screen)
+        _view(vis, screen)
         center!(screen, vis.children[][:preferred_camera])
     end
 end

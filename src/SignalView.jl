@@ -1,8 +1,8 @@
 module SignalView
 
 using GeometryTypes, Reactive, GLVisualize, GLAbstraction, Colors, GLWindow
-import GraphLayout
-import GraphLayout: AdjList
+using NetworkLayout
+import NetworkLayout.Buchheim
 
 include("graphlayout.jl")
 include("view.jl")

@@ -1,9 +1,9 @@
-using Reactive, SignalView, GeometryTypes, Colors, GLWindow, GLVisualize
-
+using Reactive, GeometryTypes, Colors, GLWindow, GLVisualize
+import SignalView
 window = glscreen()
-
+@async renderloop(window)
 # create a nice looking signal graph
-t = Signal(1.0)
+root = Signal(1.0)
 color_a = Signal(RGBA{Float32}(1,0,0,1))
 color_b = Signal(RGBA{Float32}(0,0,1,1))
 
@@ -19,9 +19,9 @@ function xy_data(x,y,i)
 end
 const N = 128
 const range = linspace(-5f0, 5f0, N)
-const heightmap = Float32[xy_data(x, y, value(t)) for x=range, y=range]
+const heightmap = Float32[xy_data(x, y, value(root)) for x=range, y=range]
 
-val = map(t) do v
+val = map(root) do v
     v/10f0
 end
 """
@@ -54,5 +54,41 @@ map(hmap_color) do hmap_color
     reinterpret(Intensity{1, Float32}, hmap_color[1][1])
 end
 
-view_signal(t, window)
-renderloop(window)
+using NetworkLayout.Buchheim
+
+
+
+SignalView.view_signal(root, window)
+
+dict = SignalView.to_adjency_dict(root)
+
+for action in root.actions
+    neighour_s = action.recipient.value
+    @show neighour_s
+    for action2 in neighour_s.actions
+        @show action2.recipient.value
+    end
+end
+root
+adjecency_list, signal_nodes = SignalView.to_adjency_list(root)
+adjecency_list
+label_sizes = [100f0 for i=1:length(adjecency_list)]
+points = Buchheim.layout(adjecency_list, nodesize=label_sizes)
+_view(visualize((Circle, points)))
+adjency_dict(root)
+function adjency_dict(s::Signal, dict = Dict{Signal, Vector{Any}}(), neighbours = [])
+    dict[s] = neighbours
+    for action in s.actions
+        neighour_s = action.recipient.value
+        if neighour_s !=nothing && !haskey(dict, neighour_s)
+            push!(neighbours, neighour_s)
+            adjency_dict(neighour_s, dict)
+        end
+    end
+    for parent_s in s.parents
+        if !haskey(dict, parent_s)
+            adjency_dict(parent_s, dict, Any[s])
+        end
+    end
+    dict
+end
